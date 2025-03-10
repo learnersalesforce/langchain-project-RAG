@@ -66,3 +66,14 @@ git status
 git add your-new-file.txt
 git commit -m "Added new file"
 git push origin main / git push --forceorigin main
+
+
+
+----------------create a new branch in vs and working with pull request----
+git checkout -b branch-name
+
+git status
+git add path/filename
+git commit -m "Message"
+
+git push origin branch-name
