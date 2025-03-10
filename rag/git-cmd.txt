@@ -60,3 +60,9 @@ git checkout main
 git pull origin main
 git fetch origin
 git checkout origin/main -- rag/git-cmd.pdf
+
+------------------------------push file from vs to git repository
+git status
+git add your-new-file.txt
+git commit -m "Added new file"
+git push origin main / git push --forceorigin main
