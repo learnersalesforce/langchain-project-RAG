@@ -1,0 +1,62 @@
+Go to GitHub and log in.
+Click on the "+" icon (top right) → Select New Repository.
+Enter a repository name (e.g., my-project).
+Choose Public or Private.
+Click "Create Repository" (Don’t initialize with README, .gitignore, or license).
+
+Run the installer and select "Git Bash" and "Git CLI" during installation.
+
+git init  # Initialize Git
+git add .  # Add all files to staging
+git commit -m "Initial commit"  # Commit the changes
+
+
+git remote add origin <repository_url>
+
+
+git remote -v
+
+
+git branch -M main  # Rename branch to main (if needed)
+git push -u origin main  # Push code to GitHub
+
+
+
+ERROR-------------------------------
+Remove Large Files from Git--------------------------------
+git rev-list --objects --all | grep "$(git verify-pack -v .git/objects/pack/*.idx | sort -k3 -n | tail -10 | awk '{print$1}')"
+
+git rm -r --cached venv/
+git commit -m "Removed large venv files"
+
+
+git rm -r --cached venv/
+git commit -m "Removed venv folder from tracking"
+
+
+Future Changes: Push New Updates-------------------------------------------
+git add .  
+git commit -m "Updated code"  
+git push origin main  
+
+
+------------------update changes--------------------------
+
+git status
+git add agents/agents.ipynb
+git status
+git commit -m "changes"
+
+git push origin main   
+or
+git push origin main --force
+
+
+
+git pull
+
+-----------------------want to fetch single file from git repoto vs code
+git checkout main
+git pull origin main
+git fetch origin
+git checkout origin/main -- rag/git-cmd.pdf
