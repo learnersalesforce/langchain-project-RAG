@@ -55,7 +55,7 @@ git push origin main --force
 
 git pull
 
------------------------want to fetch single file from git repoto vs code
+-----------------------want to fetch single file from git repo to vs code
 git checkout main
 git pull origin main
 git fetch origin
