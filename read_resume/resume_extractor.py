@@ -9,32 +9,32 @@ import json
 # Load NLP model
 nlp = spacy.load("en_core_web_sm")
 
-# ✅ Extract Text from PDF
+#  Extract Text from PDF
 def extract_text_from_pdf(pdf_path):
     try:
         doc = fitz.open(pdf_path)
         text = "\n".join([page.get_text("text") for page in doc])
         return text.strip()
     except Exception as e:
-        print(f"❌ Error extracting text from PDF {pdf_path}: {e}")
+        print(f" Error extracting text from PDF {pdf_path}: {e}")
         return ""
 
-# ✅ Extract Text from DOCX
+#  Extract Text from DOCX
 def extract_text_from_docx(docx_path):
     try:
         doc = Document(docx_path)
         text = "\n".join([para.text for para in doc.paragraphs])
         return text.strip()
     except Exception as e:
-        print(f"❌ Error extracting text from DOCX {docx_path}: {e}")
+        print(f" Error extracting text from DOCX {docx_path}: {e}")
         return ""
 
-# ✅ Extract Certifications
+#  Extract Certifications
 def extract_certifications(text):
     certifications = re.findall(r"((?:Salesforce|AWS|Azure|Google Cloud|Microsoft)[\w\s]+Certified[\w\s]*)", text, re.IGNORECASE)
     return [cert.strip() for cert in certifications]
 
-# ✅ Extract Technical Skills
+#  Extract Technical Skills
 def extract_technical_skills(text):
     skills = re.findall(
         r"(JavaScript|Python|Java|C\+\+|C#|SQL|MySQL|PostgreSQL|MongoDB|Apex|SOQL|"
@@ -44,7 +44,7 @@ def extract_technical_skills(text):
     )
     return list(set([skill.strip() for skill in skills]))
 
-# ✅ Extract Projects and URLs
+#  Extract Projects and URLs
 def extract_projects(text):
     projects = []
     
@@ -63,7 +63,7 @@ def extract_projects(text):
 
     return projects
 
-# ✅ Extract Education (Degree, University, CGPA, Percentage)
+#  Extract Education (Degree, University, CGPA, Percentage)
 def extract_education(text):
     education = []
     education_matches = re.findall(
@@ -82,7 +82,7 @@ def extract_education(text):
 
     return education
 
-# ✅ Extract Personal Details (Father Name, DOB, Address, Languages)
+#  Extract Personal Details (Father Name, DOB, Address, Languages)
 def extract_personal_details(text):
     details = {
         "Father Name": re.search(r"Father(?:'s)? Name[:\-]?\s*(.*)", text, re.IGNORECASE),
@@ -92,7 +92,7 @@ def extract_personal_details(text):
     }
     return {key: (match.group(1).strip() if match else "Not Found") for key, match in details.items()}
 
-# ✅ Extract Resume Information
+#  Extract Resume Information
 def extract_information(text):
     doc = nlp(text)
 
@@ -116,13 +116,13 @@ def extract_information(text):
 
     return extracted_data
 
-# ✅ Process a Single Resume
+#  Process a Single Resume
 def process_resume(file_path):
     ext = file_path.split(".")[-1].lower()
     text = extract_text_from_pdf(file_path) if ext == "pdf" else extract_text_from_docx(file_path)
     
     if not text.strip():
-        print(f"❌ Error: No text extracted from {file_path}")
+        print(f" Error: No text extracted from {file_path}")
         return None
     
     extracted_info = extract_information(text)
@@ -130,17 +130,17 @@ def process_resume(file_path):
     
     return extracted_info
 
-# ✅ Process Multiple Resumes
+#  Process Multiple Resumes
 def process_multiple_resumes(folder_path):
     if not os.path.exists(folder_path):
-        print(f"❌ Error: Folder path '{folder_path}' does not exist.")
+        print(f" Error: Folder path '{folder_path}' does not exist.")
         return []
 
     all_data = []
     for file in os.listdir(folder_path):
         if file.lower().endswith((".pdf", ".docx")):
             file_path = os.path.join(folder_path, file)
-            print(f"\n🚀 Processing: {file_path}")
+            print(f"\n Processing: {file_path}")
             data = process_resume(file_path)
             if data:
                 all_data.append(data)
@@ -149,10 +149,10 @@ def process_multiple_resumes(folder_path):
         print("⚠ Warning: No data extracted from resumes!")
     return all_data
 
-# ✅ Save Extracted Data to CSV (Name Based on First Resume)
+#  Save Extracted Data to CSV (Name Based on First Resume)
 def save_to_csv(data, folder_path):
     if not data:
-        print("❌ No data to save!")
+        print(" No data to save!")
         return
 
     # Get the first valid name from the extracted resumes
@@ -165,9 +165,9 @@ def save_to_csv(data, folder_path):
     df = pd.DataFrame(data)
     df.to_csv(csv_path, index=False, encoding="utf-8-sig", quoting=1)
     
-    print(f"\n✅ Data saved to {csv_path}")
+    print(f"\n Data saved to {csv_path}")
 
-# ✅ Run the Script
+#  Run the Script
 if __name__ == "__main__":
     folder_path = "D:/Updated-Langchain/read_resume"  # Change this path
     extracted_data = process_multiple_resumes(folder_path)
