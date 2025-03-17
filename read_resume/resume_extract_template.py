@@ -7,25 +7,25 @@ from docx import Document
 # Load NLP model
 nlp = spacy.load("en_core_web_sm")
 
-# ✅ Extract text from PDF resumes
+#  Extract text from PDF resumes
 def extract_text_from_pdf(pdf_path):
     try:
         doc = fitz.open(pdf_path)
         return "\n".join([page.get_text("text") for page in doc]).strip()
     except Exception as e:
-        print(f"❌ Error extracting text from PDF {pdf_path}: {e}")
+        print(f" Error extracting text from PDF {pdf_path}: {e}")
         return ""
 
-# ✅ Extract text from DOCX resumes
+#  Extract text from DOCX resumes
 def extract_text_from_docx(docx_path):
     try:
         doc = Document(docx_path)
         return "\n".join([para.text for para in doc.paragraphs]).strip()
     except Exception as e:
-        print(f"❌ Error extracting text from DOCX {docx_path}: {e}")
+        print(f" Error extracting text from DOCX {docx_path}: {e}")
         return ""
 
-# ✅ Extract resume information using NLP & regex
+#  Extract resume information using NLP & regex
 def extract_information(text):
     doc = nlp(text)
 
@@ -81,7 +81,7 @@ def extract_information(text):
         "Experience": ", ".join(experience) if experience else "Not Available",
     }
 
-# ✅ Insert extracted data into template.pdf (Table Format)
+#  Insert extracted data into template.pdf (Table Format)
 def fill_template_with_table(data, template_path, output_folder):
     doc = fitz.open(template_path)
 
@@ -91,25 +91,25 @@ def fill_template_with_table(data, template_path, output_folder):
     if len(doc) == 0:
         doc.insert_page(0)
 
-    # ✅ Define starting position (Adjust for formatting)
+    #  Define starting position (Adjust for formatting)
     x, y = 50, 100
     line_spacing = 15
 
-    # ✅ Insert table headers
+    #  Insert table headers
     headers = ["Field", "Value"]
     doc[0].insert_text((x, y), f"{headers[0]:<20} {headers[1]:<60}", fontsize=12, color=(0, 0, 0))
     y += line_spacing
 
-    # ✅ Insert extracted resume data into table format
+    #  Insert extracted resume data into table format
     for key, value in data.items():
         doc[0].insert_text((x, y), f"{key:<20}: {value}", fontsize=11, color=(0, 0, 0))
         y += line_spacing
 
     doc.save(output_path)
     doc.close()
-    print(f"✅ Successfully saved: {output_path}")
+    print(f" Successfully saved: {output_path}")
 
-# ✅ Process resumes and insert extracted data into the template
+#  Process resumes and insert extracted data into the template
 def process_resumes(resume_folder, template_pdf, output_folder):
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
@@ -117,17 +117,17 @@ def process_resumes(resume_folder, template_pdf, output_folder):
     for file in os.listdir(resume_folder):
         if file.lower().endswith((".pdf", ".docx")):
             file_path = os.path.join(resume_folder, file)
-            print(f"\n🚀 Processing: {file_path}")
+            print(f"\n Processing: {file_path}")
 
             text = extract_text_from_pdf(file_path) if file.endswith(".pdf") else extract_text_from_docx(file_path)
             if not text.strip():
-                print(f"❌ No text extracted from {file_path}")
+                print(f" No text extracted from {file_path}")
                 continue
 
             extracted_info = extract_information(text)
             fill_template_with_table(extracted_info, template_pdf, output_folder)
 
-# ✅ Run the script
+#  Run the script
 if __name__ == "__main__":
     resumes_folder = "D:/Updated-Langchain/read_resume"
     template_pdf = "D:/Updated-Langchain/read_resume/template.pdf"
